@@ -5,7 +5,7 @@
     <img id="member" src="./assets/Blackpink.png" />
     <p class="bold">Get ticket</p>
     <p class="title">Sunday 26 January 2020 at 03.00 PM.</p>
-    <button class="btn" v-if="!isDisabled && !isSoldout">{{ enabletxt }}</button>
+    <button class="btn" v-if="!isDisabled && !isSoldout" @click="gotoTicket">{{ enabletxt }}</button>
     <button class="btn" v-if="isDisabled && !isSoldout" disabled>{{ disableTxt }}</button>
     <button class="btn" v-if="isSoldout" disabled>{{ soldoutTxt }}</button>
     <p>Blackpink in your area</p>
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ShowDetails",
   data() {
@@ -23,6 +25,18 @@ export default {
       isDisabled: false,
       isSoldout: false
     };
+  },
+  methods: {
+    async gotoTicket() {
+      let response = await axios.get(
+        "https://us-central1-bp-backend.cloudfunctions.net/api/get-ticket"
+      );
+      if (response.data.message < 10) {
+        alert("ok");
+      } else {
+        alert("not ok");
+      }
+    }
   }
 };
 </script>
